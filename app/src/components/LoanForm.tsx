@@ -177,8 +177,14 @@ export function LoanForm({ onSubmit }: LoanFormProps) {
               value={form.principal}
               onChange={(e) => updateField('principal', e.target.value)}
               className={inputClass}
+              aria-invalid={!!errors.principal}
+              aria-describedby={errors.principal ? 'principal-error' : undefined}
             />
-            {errors.principal && <p className={errorClass}>{errors.principal}</p>}
+            {errors.principal && (
+              <p id="principal-error" className={errorClass} role="alert">
+                {errors.principal}
+              </p>
+            )}
           </div>
 
           <div>
@@ -192,9 +198,13 @@ export function LoanForm({ onSubmit }: LoanFormProps) {
               value={form.annualInterestRate}
               onChange={(e) => updateField('annualInterestRate', e.target.value)}
               className={inputClass}
+              aria-invalid={!!errors.annualInterestRate}
+              aria-describedby={errors.annualInterestRate ? 'rate-error' : undefined}
             />
             {errors.annualInterestRate && (
-              <p className={errorClass}>{errors.annualInterestRate}</p>
+              <p id="rate-error" className={errorClass} role="alert">
+                {errors.annualInterestRate}
+              </p>
             )}
           </div>
 
@@ -208,8 +218,14 @@ export function LoanForm({ onSubmit }: LoanFormProps) {
               value={form.termYears}
               onChange={(e) => updateField('termYears', e.target.value)}
               className={inputClass}
+              aria-invalid={!!errors.termYears}
+              aria-describedby={errors.termYears ? 'term-error' : undefined}
             />
-            {errors.termYears && <p className={errorClass}>{errors.termYears}</p>}
+            {errors.termYears && (
+              <p id="term-error" className={errorClass} role="alert">
+                {errors.termYears}
+              </p>
+            )}
           </div>
 
           <div>
@@ -222,8 +238,14 @@ export function LoanForm({ onSubmit }: LoanFormProps) {
               value={form.startYearMonth}
               onChange={(e) => updateField('startYearMonth', e.target.value)}
               className={inputClass}
+              aria-invalid={!!errors.startYearMonth}
+              aria-describedby={errors.startYearMonth ? 'start-error' : undefined}
             />
-            {errors.startYearMonth && <p className={errorClass}>{errors.startYearMonth}</p>}
+            {errors.startYearMonth && (
+              <p id="start-error" className={errorClass} role="alert">
+                {errors.startYearMonth}
+              </p>
+            )}
           </div>
         </div>
       </div>
@@ -242,8 +264,14 @@ export function LoanForm({ onSubmit }: LoanFormProps) {
               value={form.monthlyExtra}
               onChange={(e) => updateField('monthlyExtra', e.target.value)}
               className={inputClass}
+              aria-invalid={!!errors.monthlyExtra}
+              aria-describedby={errors.monthlyExtra ? 'monthly-extra-error' : undefined}
             />
-            {errors.monthlyExtra && <p className={errorClass}>{errors.monthlyExtra}</p>}
+            {errors.monthlyExtra && (
+              <p id="monthly-extra-error" className={errorClass} role="alert">
+                {errors.monthlyExtra}
+              </p>
+            )}
           </div>
 
           <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -258,8 +286,14 @@ export function LoanForm({ onSubmit }: LoanFormProps) {
                 value={form.bonusMonths}
                 onChange={(e) => updateField('bonusMonths', e.target.value)}
                 className={inputClass}
+                aria-invalid={!!errors.bonusMonths}
+                aria-describedby={errors.bonusMonths ? 'bonus-months-error' : undefined}
               />
-              {errors.bonusMonths && <p className={errorClass}>{errors.bonusMonths}</p>}
+              {errors.bonusMonths && (
+                <p id="bonus-months-error" className={errorClass} role="alert">
+                  {errors.bonusMonths}
+                </p>
+              )}
             </div>
 
             <div>
@@ -272,8 +306,14 @@ export function LoanForm({ onSubmit }: LoanFormProps) {
                 value={form.bonusAmount}
                 onChange={(e) => updateField('bonusAmount', e.target.value)}
                 className={inputClass}
+                aria-invalid={!!errors.bonusAmount}
+                aria-describedby={errors.bonusAmount ? 'bonus-amount-error' : undefined}
               />
-              {errors.bonusAmount && <p className={errorClass}>{errors.bonusAmount}</p>}
+              {errors.bonusAmount && (
+                <p id="bonus-amount-error" className={errorClass} role="alert">
+                  {errors.bonusAmount}
+                </p>
+              )}
             </div>
           </div>
         </div>
@@ -290,42 +330,56 @@ export function LoanForm({ onSubmit }: LoanFormProps) {
             </button>
           </div>
 
-          {form.oneTimeExtras.map((item, index) => (
-            <div key={index} className="flex gap-2 mb-2 items-start">
-              <div className="flex-1">
-                <input
-                  type="month"
-                  value={item.yearMonth}
-                  onChange={(e) => updateOneTimeExtra(index, 'yearMonth', e.target.value)}
-                  className={inputClass}
-                  placeholder="YYYY-MM"
-                />
-                {errors[`oneTimeExtras.${index}.yearMonth`] && (
-                  <p className={errorClass}>{errors[`oneTimeExtras.${index}.yearMonth`]}</p>
-                )}
+          {form.oneTimeExtras.map((item, index) => {
+            const ymErrorKey = `oneTimeExtras.${index}.yearMonth`;
+            const amtErrorKey = `oneTimeExtras.${index}.amount`;
+            return (
+              <div key={index} className="flex gap-2 mb-2 items-start">
+                <div className="flex-1">
+                  <input
+                    type="month"
+                    value={item.yearMonth}
+                    onChange={(e) => updateOneTimeExtra(index, 'yearMonth', e.target.value)}
+                    className={inputClass}
+                    placeholder="YYYY-MM"
+                    aria-label={`臨時返済${index + 1}の年月`}
+                    aria-invalid={!!errors[ymErrorKey]}
+                    aria-describedby={errors[ymErrorKey] ? `ote-ym-error-${index}` : undefined}
+                  />
+                  {errors[ymErrorKey] && (
+                    <p id={`ote-ym-error-${index}`} className={errorClass} role="alert">
+                      {errors[ymErrorKey]}
+                    </p>
+                  )}
+                </div>
+                <div className="flex-1">
+                  <input
+                    type="number"
+                    value={item.amount}
+                    onChange={(e) => updateOneTimeExtra(index, 'amount', e.target.value)}
+                    className={inputClass}
+                    placeholder="金額"
+                    aria-label={`臨時返済${index + 1}の金額`}
+                    aria-invalid={!!errors[amtErrorKey]}
+                    aria-describedby={errors[amtErrorKey] ? `ote-amt-error-${index}` : undefined}
+                  />
+                  {errors[amtErrorKey] && (
+                    <p id={`ote-amt-error-${index}`} className={errorClass} role="alert">
+                      {errors[amtErrorKey]}
+                    </p>
+                  )}
+                </div>
+                <button
+                  type="button"
+                  onClick={() => removeOneTimeExtra(index)}
+                  className="px-3 py-2 text-red-600 hover:text-red-800"
+                  aria-label={`臨時返済${index + 1}を削除`}
+                >
+                  ×
+                </button>
               </div>
-              <div className="flex-1">
-                <input
-                  type="number"
-                  value={item.amount}
-                  onChange={(e) => updateOneTimeExtra(index, 'amount', e.target.value)}
-                  className={inputClass}
-                  placeholder="金額"
-                />
-                {errors[`oneTimeExtras.${index}.amount`] && (
-                  <p className={errorClass}>{errors[`oneTimeExtras.${index}.amount`]}</p>
-                )}
-              </div>
-              <button
-                type="button"
-                onClick={() => removeOneTimeExtra(index)}
-                className="px-3 py-2 text-red-600 hover:text-red-800"
-                aria-label="削除"
-              >
-                ×
-              </button>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
 

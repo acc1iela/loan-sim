@@ -230,9 +230,9 @@ describe('LoanForm', () => {
 
       expect(screen.getAllByPlaceholderText('YYYY-MM')).toHaveLength(2);
 
-      // 1つ削除
-      const deleteButtons = screen.getAllByRole('button', { name: '削除' });
-      await user.click(deleteButtons[0]);
+      // 1つ削除（aria-labelは「臨時返済1を削除」のように動的）
+      const deleteButton = screen.getByRole('button', { name: '臨時返済1を削除' });
+      await user.click(deleteButton);
 
       expect(screen.getAllByPlaceholderText('YYYY-MM')).toHaveLength(1);
     });

@@ -73,7 +73,10 @@ export function ScheduleTable({ schedule }: ScheduleTableProps) {
       </div>
 
       {totalPages > 1 && (
-        <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-200">
+        <nav
+          aria-label="返済スケジュールのページ送り"
+          className="flex items-center justify-between mt-4 pt-4 border-t border-gray-200"
+        >
           <p className="text-sm text-gray-600">
             {startIndex + 1} - {endIndex} / {schedule.length}件
           </p>
@@ -83,6 +86,7 @@ export function ScheduleTable({ schedule }: ScheduleTableProps) {
               onClick={() => goToPage(0)}
               disabled={currentPage === 0}
               className="px-3 py-1 text-sm border rounded hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              aria-label="最初のページへ"
             >
               最初
             </button>
@@ -90,16 +94,18 @@ export function ScheduleTable({ schedule }: ScheduleTableProps) {
               onClick={() => goToPage(currentPage - 1)}
               disabled={currentPage === 0}
               className="px-3 py-1 text-sm border rounded hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              aria-label="前のページへ"
             >
               前へ
             </button>
-            <span className="px-3 py-1 text-sm text-gray-600">
+            <span className="px-3 py-1 text-sm text-gray-600" aria-current="page">
               {currentPage + 1} / {totalPages}
             </span>
             <button
               onClick={() => goToPage(currentPage + 1)}
               disabled={currentPage >= totalPages - 1}
               className="px-3 py-1 text-sm border rounded hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              aria-label="次のページへ"
             >
               次へ
             </button>
@@ -107,11 +113,12 @@ export function ScheduleTable({ schedule }: ScheduleTableProps) {
               onClick={() => goToPage(totalPages - 1)}
               disabled={currentPage >= totalPages - 1}
               className="px-3 py-1 text-sm border rounded hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              aria-label="最後のページへ"
             >
               最後
             </button>
           </div>
-        </div>
+        </nav>
       )}
     </div>
   );
