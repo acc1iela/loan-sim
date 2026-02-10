@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import {
   LineChart,
   Line,
@@ -30,7 +31,10 @@ function formatTooltip(value: number): string {
 
 export function BalanceChart({ schedule, scheduleWithoutPrepayment }: BalanceChartProps) {
   // チャート用データの準備（年単位でサンプリング）
-  const chartData = prepareChartData(schedule, scheduleWithoutPrepayment);
+  const chartData = useMemo(
+    () => prepareChartData(schedule, scheduleWithoutPrepayment),
+    [schedule, scheduleWithoutPrepayment]
+  );
 
   return (
     <div className="bg-white p-6 rounded-lg shadow">
