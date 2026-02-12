@@ -26,6 +26,11 @@ const initialFormState: FormState = {
 
 export type ValidationErrors = Record<string, string>;
 
+export interface ValidateResult {
+  input: LoanInput | null;
+  firstErrorFieldId: string | null;
+}
+
 export interface UseLoanFormReturn {
   form: FormState;
   errors: ValidationErrors;
@@ -33,7 +38,7 @@ export interface UseLoanFormReturn {
   addOneTimeExtra: () => void;
   updateOneTimeExtra: (index: number, field: 'yearMonth' | 'amount', value: string) => void;
   removeOneTimeExtra: (index: number) => void;
-  validate: () => LoanInput | null;
+  validate: () => ValidateResult;
 }
 
 /**
@@ -74,7 +79,7 @@ export function useLoanForm(): UseLoanFormReturn {
     }));
   };
 
-  const validate = (): LoanInput | null => {
+  const validate = (): ValidateResult => {
     const newErrors: ValidationErrors = {};
 
     // 借入額
@@ -149,23 +154,60 @@ export function useLoanForm(): UseLoanFormReturn {
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
-      return null;
+
+      // 最初のエラーフィールドIDを計算
+      const fieldOrder = [
+        'principal',
+        'annualInterestRate',
+        'termYears',
+        'startYearMonth',
+        'monthlyExtra',
+        'bonusMonths',
+        'bonusAmount',
+      ];
+
+      let firstErrorFieldId: string | null = null;
+
+      for (const field of fieldOrder) {
+        if (newErrors[field]) {
+          firstErrorFieldId = field;
+          break;
+        }
+      }
+
+      if (!firstErrorFieldId) {
+        for (let i = 0; i < form.oneTimeExtras.length; i++) {
+          if (newErrors[`oneTimeExtras.${i}.yearMonth`]) {
+            firstErrorFieldId = `oneTimeExtra-${i}-yearMonth`;
+            break;
+          }
+          if (newErrors[`oneTimeExtras.${i}.amount`]) {
+            firstErrorFieldId = `oneTimeExtra-${i}-amount`;
+            break;
+          }
+        }
+      }
+
+      return { input: null, firstErrorFieldId };
     }
 
     return {
-      principal,
-      annualInterestRate,
-      termYears,
-      startYearMonth: startYearMonth as YearMonth,
-      repaymentMethod: 'annuity',
-      prepayment: {
-        monthlyExtra,
-        bonusExtra:
-          bonusMonths.length > 0 && bonusAmount > 0
-            ? { months: bonusMonths, amount: bonusAmount }
-            : undefined,
-        oneTimeExtras,
+      input: {
+        principal,
+        annualInterestRate,
+        termYears,
+        startYearMonth: startYearMonth as YearMonth,
+        repaymentMethod: 'annuity',
+        prepayment: {
+          monthlyExtra,
+          bonusExtra:
+            bonusMonths.length > 0 && bonusAmount > 0
+              ? { months: bonusMonths, amount: bonusAmount }
+              : undefined,
+          oneTimeExtras,
+        },
       },
+      firstErrorFieldId: null,
     };
   };
 

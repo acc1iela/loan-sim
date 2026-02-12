@@ -24,9 +24,12 @@ export function LoanForm({ onSubmit }: LoanFormProps) {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const input = validate();
+    const { input, firstErrorFieldId } = validate();
     if (input) {
       onSubmit(input);
+    } else if (firstErrorFieldId) {
+      // バリデーションエラー時は最初のエラーフィールドにフォーカス
+      document.getElementById(firstErrorFieldId)?.focus();
     }
   };
 

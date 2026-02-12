@@ -44,6 +44,7 @@ export function OneTimeExtrasList({
           <div key={index} className="flex gap-2 mb-2 items-start">
             <div className="flex-1">
               <input
+                id={`oneTimeExtra-${index}-yearMonth`}
                 type="month"
                 value={item.yearMonth}
                 onChange={(e) => onUpdate(index, 'yearMonth', e.target.value)}
@@ -61,6 +62,7 @@ export function OneTimeExtrasList({
             </div>
             <div className="flex-1">
               <input
+                id={`oneTimeExtra-${index}-amount`}
                 type="number"
                 value={item.amount}
                 onChange={(e) => onUpdate(index, 'amount', e.target.value)}

@@ -277,4 +277,54 @@ describe('LoanForm', () => {
       expect(onSubmit).not.toHaveBeenCalled();
     });
   });
+
+  describe('自動フォーカス', () => {
+    it('バリデーションエラー時に最初のエラーフィールドにフォーカスする', async () => {
+      const user = userEvent.setup();
+      render(<LoanForm onSubmit={vi.fn()} />);
+
+      // 借入額を無効な値に
+      const principalInput = screen.getByLabelText('借入額（円）');
+      await user.clear(principalInput);
+      await user.type(principalInput, '-100');
+
+      await user.click(screen.getByRole('button', { name: 'シミュレーション実行' }));
+
+      // 借入額フィールドにフォーカスが当たっている
+      expect(principalInput).toHaveFocus();
+    });
+
+    it('複数エラーがある場合、最初のエラーフィールドにフォーカスする', async () => {
+      const user = userEvent.setup();
+      render(<LoanForm onSubmit={vi.fn()} />);
+
+      // 借入額と年利を両方無効に
+      const principalInput = screen.getByLabelText('借入額（円）');
+      const rateInput = screen.getByLabelText('年利（%）');
+
+      await user.clear(principalInput);
+      await user.type(principalInput, '-100');
+      await user.clear(rateInput);
+      await user.type(rateInput, '-1');
+
+      await user.click(screen.getByRole('button', { name: 'シミュレーション実行' }));
+
+      // 最初のエラーフィールド（借入額）にフォーカス
+      expect(principalInput).toHaveFocus();
+    });
+
+    it('臨時返済のエラー時にそのフィールドにフォーカスする', async () => {
+      const user = userEvent.setup();
+      render(<LoanForm onSubmit={vi.fn()} />);
+
+      // 臨時返済を追加（年月を空のまま）
+      await user.click(screen.getByRole('button', { name: '+ 追加' }));
+
+      await user.click(screen.getByRole('button', { name: 'シミュレーション実行' }));
+
+      // 臨時返済の年月フィールドにフォーカス
+      const yearMonthInput = screen.getByLabelText('臨時返済1の年月');
+      expect(yearMonthInput).toHaveFocus();
+    });
+  });
 });
