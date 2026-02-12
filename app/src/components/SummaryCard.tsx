@@ -1,13 +1,9 @@
 import type { Summary } from '../domain';
+import { formatCurrency } from '../utils/format';
 
 interface SummaryCardProps {
   summary: Summary;
   principal: number;
-}
-
-/** 数値を3桁カンマ区切りでフォーマット */
-function formatCurrency(value: number): string {
-  return value.toLocaleString('ja-JP');
 }
 
 /** 月数を「○年○ヶ月」形式でフォーマット */

@@ -1,13 +1,9 @@
 import { useState } from 'react';
 import type { ScheduleRow } from '../domain';
+import { formatCurrency } from '../utils/format';
 
 interface ScheduleTableProps {
   schedule: ScheduleRow[];
-}
-
-/** 数値を3桁カンマ区切りでフォーマット */
-function formatCurrency(value: number): string {
-  return value.toLocaleString('ja-JP');
 }
 
 const PAGE_SIZE = 24; // 2年分
