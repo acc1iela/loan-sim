@@ -14,9 +14,9 @@ export interface FormState {
 }
 
 const initialFormState: FormState = {
-  principal: '30000000',
-  annualInterestRate: '1.5',
-  termYears: '35',
+  principal: '6000000',
+  annualInterestRate: '3.0',
+  termYears: '7',
   startYearMonth: '',
   monthlyExtra: '0',
   bonusMonths: '',

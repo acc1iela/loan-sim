@@ -72,9 +72,9 @@ describe('App 統合テスト', () => {
       expect(screen.getByText('総支払額')).toBeInTheDocument();
       expect(screen.getByText('総利息')).toBeInTheDocument();
 
-      // 35年 = 420ヶ月
-      expect(screen.getByText('35年')).toBeInTheDocument();
-      expect(screen.getByText('420ヶ月')).toBeInTheDocument();
+      // 7年 = 84ヶ月
+      expect(screen.getByText('7年')).toBeInTheDocument();
+      expect(screen.getByText('84ヶ月')).toBeInTheDocument();
     });
 
     it('ScheduleTable に返済スケジュールが表示される', async () => {
@@ -163,18 +163,18 @@ describe('App 統合テスト', () => {
 
       // 1回目: デフォルト値
       await user.click(screen.getByRole('button', { name: 'シミュレーション実行' }));
-      expect(screen.getByText('35年')).toBeInTheDocument();
+      expect(screen.getByText('7年')).toBeInTheDocument();
 
       // 2回目: 返済年数を変更
       const termInput = screen.getByLabelText('返済年数');
       await user.clear(termInput);
-      await user.type(termInput, '20');
+      await user.type(termInput, '10');
 
       await user.click(screen.getByRole('button', { name: 'シミュレーション実行' }));
 
       // 結果が更新される
-      expect(screen.getByText('20年')).toBeInTheDocument();
-      expect(screen.queryByText('35年')).not.toBeInTheDocument();
+      expect(screen.getByText('10年')).toBeInTheDocument();
+      expect(screen.queryByText('7年')).not.toBeInTheDocument();
     });
   });
 });

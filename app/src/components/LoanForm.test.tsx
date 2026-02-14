@@ -39,9 +39,9 @@ describe('LoanForm', () => {
     it('初期値が設定されている', () => {
       render(<LoanForm onSubmit={vi.fn()} />);
 
-      expect(screen.getByLabelText('借入額（円）')).toHaveValue(30000000);
-      expect(screen.getByLabelText('年利（%）')).toHaveValue(1.5);
-      expect(screen.getByLabelText('返済年数')).toHaveValue(35);
+      expect(screen.getByLabelText('借入額（円）')).toHaveValue(6000000);
+      expect(screen.getByLabelText('年利（%）')).toHaveValue(3);
+      expect(screen.getByLabelText('返済年数')).toHaveValue(7);
     });
   });
 
@@ -56,9 +56,9 @@ describe('LoanForm', () => {
       expect(onSubmit).toHaveBeenCalledTimes(1);
       expect(onSubmit).toHaveBeenCalledWith(
         expect.objectContaining({
-          principal: 30000000,
-          annualInterestRate: 1.5,
-          termYears: 35,
+          principal: 6000000,
+          annualInterestRate: 3,
+          termYears: 7,
           repaymentMethod: 'annuity',
         })
       );
