@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import type { ScheduleRow } from '../domain';
 import { formatCurrency } from '../utils/format';
 
@@ -10,6 +10,10 @@ const PAGE_SIZE = 24; // 2年分
 
 export function ScheduleTable({ schedule }: ScheduleTableProps) {
   const [currentPage, setCurrentPage] = useState(0);
+
+  useEffect(() => {
+    setCurrentPage(0);
+  }, [schedule]);
   const totalPages = Math.ceil(schedule.length / PAGE_SIZE);
 
   const startIndex = currentPage * PAGE_SIZE;
