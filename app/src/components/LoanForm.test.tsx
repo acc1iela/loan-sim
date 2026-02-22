@@ -230,9 +230,12 @@ describe('LoanForm', () => {
 
       expect(screen.getAllByPlaceholderText('YYYY-MM')).toHaveLength(2);
 
-      // 1つ削除（aria-labelは「臨時返済1を削除」のように動的）
+      // 1つ削除（確認ダイアログあり）
       const deleteButton = screen.getByRole('button', { name: '臨時返済1を削除' });
       await user.click(deleteButton);
+      // × クリックで確認ボタンが表示される
+      const confirmButton = screen.getByRole('button', { name: '臨時返済1の削除を確定' });
+      await user.click(confirmButton);
 
       expect(screen.getAllByPlaceholderText('YYYY-MM')).toHaveLength(1);
     });

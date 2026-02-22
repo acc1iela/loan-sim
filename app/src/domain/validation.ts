@@ -16,6 +16,11 @@ export function validateLoanInput(input: LoanInput): ValidationResult {
       field: 'principal',
       message: '借入額は0より大きい必要があります',
     });
+  } else if (input.principal > 500_000_000) {
+    errors.push({
+      field: 'principal',
+      message: '借入額は5億円以下で入力してください',
+    });
   }
   if (!Number.isInteger(input.principal)) {
     errors.push({
@@ -30,6 +35,11 @@ export function validateLoanInput(input: LoanInput): ValidationResult {
       field: 'annualInterestRate',
       message: '年利は0以上で入力してください',
     });
+  } else if (input.annualInterestRate > 100) {
+    errors.push({
+      field: 'annualInterestRate',
+      message: '年利は100%以下で入力してください',
+    });
   }
 
   // termYears
@@ -37,6 +47,11 @@ export function validateLoanInput(input: LoanInput): ValidationResult {
     errors.push({
       field: 'termYears',
       message: '返済年数は0より大きい必要があります',
+    });
+  } else if (input.termYears > 50) {
+    errors.push({
+      field: 'termYears',
+      message: '返済年数は50年以下で入力してください',
     });
   }
   if (!Number.isInteger(input.termYears)) {
