@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import type { ScheduleRow } from '../domain';
 import { formatCurrency } from '../utils/format';
 
@@ -10,10 +10,13 @@ const PAGE_SIZE = 24; // 2年分
 
 export function ScheduleTable({ schedule }: ScheduleTableProps) {
   const [currentPage, setCurrentPage] = useState(0);
+  const [prevSchedule, setPrevSchedule] = useState(schedule);
 
-  useEffect(() => {
+  // schedule が変わったらページをリセット（useEffect より先に処理され中間状態が出ない）
+  if (prevSchedule !== schedule) {
+    setPrevSchedule(schedule);
     setCurrentPage(0);
-  }, [schedule]);
+  }
   const totalPages = Math.ceil(schedule.length / PAGE_SIZE);
 
   const startIndex = currentPage * PAGE_SIZE;
