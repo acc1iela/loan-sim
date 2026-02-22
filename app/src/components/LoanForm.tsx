@@ -1,15 +1,11 @@
 import type { LoanInput } from '../domain';
 import { useLoanForm } from '../hooks/useLoanForm';
 import { PrepaymentSection } from './PrepaymentSection';
+import { INPUT_CLASS, LABEL_CLASS, ERROR_CLASS } from '../utils/styles';
 
 interface LoanFormProps {
   onSubmit: (input: LoanInput) => void;
 }
-
-const INPUT_CLASS =
-  'w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent';
-const LABEL_CLASS = 'block text-sm font-medium text-gray-700 mb-1';
-const ERROR_CLASS = 'text-red-500 text-sm mt-1';
 
 export function LoanForm({ onSubmit }: LoanFormProps) {
   const {
@@ -132,9 +128,6 @@ export function LoanForm({ onSubmit }: LoanFormProps) {
         onAddOneTimeExtra={addOneTimeExtra}
         onUpdateOneTimeExtra={updateOneTimeExtra}
         onRemoveOneTimeExtra={removeOneTimeExtra}
-        inputClass={INPUT_CLASS}
-        labelClass={LABEL_CLASS}
-        errorClass={ERROR_CLASS}
       />
 
       <button

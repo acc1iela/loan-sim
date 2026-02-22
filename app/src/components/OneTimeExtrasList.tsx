@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { INPUT_CLASS as inputClass, LABEL_CLASS as labelClass, ERROR_CLASS as errorClass } from '../utils/styles';
 
 interface OneTimeExtraItem {
   yearMonth: string;
@@ -11,9 +12,6 @@ interface OneTimeExtrasListProps {
   onAdd: () => void;
   onUpdate: (index: number, field: 'yearMonth' | 'amount', value: string) => void;
   onRemove: (index: number) => void;
-  inputClass: string;
-  labelClass: string;
-  errorClass: string;
 }
 
 export function OneTimeExtrasList({
@@ -22,9 +20,6 @@ export function OneTimeExtrasList({
   onAdd,
   onUpdate,
   onRemove,
-  inputClass,
-  labelClass,
-  errorClass,
 }: OneTimeExtrasListProps) {
   const [confirmIndex, setConfirmIndex] = useState<number | null>(null);
 

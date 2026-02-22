@@ -1,4 +1,5 @@
 import { OneTimeExtrasList } from './OneTimeExtrasList';
+import { INPUT_CLASS as inputClass, LABEL_CLASS as labelClass, ERROR_CLASS as errorClass } from '../utils/styles';
 
 interface OneTimeExtraItem {
   yearMonth: string;
@@ -15,9 +16,6 @@ interface PrepaymentSectionProps {
   onAddOneTimeExtra: () => void;
   onUpdateOneTimeExtra: (index: number, field: 'yearMonth' | 'amount', value: string) => void;
   onRemoveOneTimeExtra: (index: number) => void;
-  inputClass: string;
-  labelClass: string;
-  errorClass: string;
 }
 
 export function PrepaymentSection({
@@ -30,9 +28,6 @@ export function PrepaymentSection({
   onAddOneTimeExtra,
   onUpdateOneTimeExtra,
   onRemoveOneTimeExtra,
-  inputClass,
-  labelClass,
-  errorClass,
 }: PrepaymentSectionProps) {
   return (
     <div className="bg-white p-6 rounded-lg shadow">
@@ -109,9 +104,6 @@ export function PrepaymentSection({
         onAdd={onAddOneTimeExtra}
         onUpdate={onUpdateOneTimeExtra}
         onRemove={onRemoveOneTimeExtra}
-        inputClass={inputClass}
-        labelClass={labelClass}
-        errorClass={errorClass}
       />
     </div>
   );
