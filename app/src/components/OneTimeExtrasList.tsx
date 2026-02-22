@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 interface OneTimeExtraItem {
   yearMonth: string;
   amount: string;
@@ -24,6 +26,21 @@ export function OneTimeExtrasList({
   labelClass,
   errorClass,
 }: OneTimeExtrasListProps) {
+  const [confirmIndex, setConfirmIndex] = useState<number | null>(null);
+
+  const handleRemoveClick = (index: number) => {
+    setConfirmIndex(index);
+  };
+
+  const handleConfirmRemove = (index: number) => {
+    onRemove(index);
+    setConfirmIndex(null);
+  };
+
+  const handleCancelRemove = () => {
+    setConfirmIndex(null);
+  };
+
   return (
     <div className="mt-4">
       <div className="flex items-center justify-between mb-2">
@@ -40,6 +57,7 @@ export function OneTimeExtrasList({
       {items.map((item, index) => {
         const ymErrorKey = `oneTimeExtras.${index}.yearMonth`;
         const amtErrorKey = `oneTimeExtras.${index}.amount`;
+        const isConfirming = confirmIndex === index;
         return (
           <div key={index} className="flex gap-2 mb-2 items-start">
             <div className="flex-1">
@@ -78,14 +96,35 @@ export function OneTimeExtrasList({
                 </p>
               )}
             </div>
-            <button
-              type="button"
-              onClick={() => onRemove(index)}
-              className="px-3 py-2 text-red-600 hover:text-red-800"
-              aria-label={`臨時返済${index + 1}を削除`}
-            >
-              ×
-            </button>
+            {isConfirming ? (
+              <div className="flex gap-1 items-center">
+                <button
+                  type="button"
+                  onClick={() => handleConfirmRemove(index)}
+                  className="px-2 py-1 text-xs text-white bg-red-600 hover:bg-red-700 rounded"
+                  aria-label={`臨時返済${index + 1}の削除を確定`}
+                >
+                  削除
+                </button>
+                <button
+                  type="button"
+                  onClick={handleCancelRemove}
+                  className="px-2 py-1 text-xs text-gray-600 hover:text-gray-800 border rounded"
+                  aria-label="削除をキャンセル"
+                >
+                  戻す
+                </button>
+              </div>
+            ) : (
+              <button
+                type="button"
+                onClick={() => handleRemoveClick(index)}
+                className="px-3 py-2 text-red-600 hover:text-red-800"
+                aria-label={`臨時返済${index + 1}を削除`}
+              >
+                ×
+              </button>
+            )}
           </div>
         );
       })}
