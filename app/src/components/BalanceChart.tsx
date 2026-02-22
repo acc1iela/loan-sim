@@ -55,10 +55,10 @@ export function BalanceChart({ schedule, scheduleWithoutPrepayment }: BalanceCha
               stroke="#6b7280"
             />
             <Tooltip
-              formatter={(value, name) => [
-                formatTooltip(typeof value === 'number' ? value : 0),
-                name === 'balance' ? '残高' : '繰上げなし',
-              ]}
+              formatter={(value, name) => {
+                if (typeof value !== 'number') return null;
+                return [formatTooltip(value), name === 'balance' ? '残高' : '繰上げなし'];
+              }}
               labelFormatter={(label) => `${label}`}
               contentStyle={{
                 backgroundColor: 'white',
