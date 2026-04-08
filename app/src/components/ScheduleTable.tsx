@@ -32,7 +32,7 @@ export function ScheduleTable({ schedule }: ScheduleTableProps) {
       <h2 className="text-lg font-semibold mb-4">返済スケジュール</h2>
 
       <div className="overflow-x-auto">
-        <table className="w-full text-sm">
+        <table className="w-full text-sm" aria-label="返済スケジュール詳細">
           <thead>
             <tr className="border-b border-gray-200 bg-gray-50">
               <th className="px-3 py-2 text-left font-medium text-gray-600">回</th>
