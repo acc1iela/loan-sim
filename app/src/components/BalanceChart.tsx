@@ -40,7 +40,7 @@ export function BalanceChart({ schedule, scheduleWithoutPrepayment }: BalanceCha
     <div className="bg-white p-6 rounded-lg shadow">
       <h2 className="text-lg font-semibold mb-4">残高推移</h2>
 
-      <div className="h-80">
+      <div className="h-80" role="img" aria-label="元本残高の推移グラフ">
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={chartData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
