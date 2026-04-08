@@ -19,7 +19,13 @@ function App() {
 
   const handleSubmit = (input: LoanInput) => {
     const schedule = generateSchedule(input);
-    const scheduleWithoutPrepayment = generateScheduleWithoutPrepayment(input);
+    const hasPrepayment =
+      input.prepayment.monthlyExtra > 0 ||
+      !!input.prepayment.bonusExtra ||
+      input.prepayment.oneTimeExtras.length > 0;
+    const scheduleWithoutPrepayment = hasPrepayment
+      ? generateScheduleWithoutPrepayment(input)
+      : schedule;
     const summary = calcSummaryFromSchedule(input, schedule, scheduleWithoutPrepayment);
 
     setResult({
