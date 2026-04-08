@@ -113,10 +113,11 @@ export function useLoanForm(): UseLoanFormReturn {
     }
 
     // 毎月の追加返済
-    const monthlyExtra = parseInt(form.monthlyExtra, 10) || 0;
-    if (monthlyExtra < 0) {
-      newErrors.monthlyExtra = '0以上で入力してください';
+    const monthlyExtraRaw = parseInt(form.monthlyExtra, 10);
+    if (isNaN(monthlyExtraRaw) || monthlyExtraRaw < 0) {
+      newErrors.monthlyExtra = '0以上の整数で入力してください';
     }
+    const monthlyExtra = isNaN(monthlyExtraRaw) ? 0 : monthlyExtraRaw;
 
     // ボーナス月
     const bonusMonthsStr = form.bonusMonths.trim();
@@ -134,26 +135,27 @@ export function useLoanForm(): UseLoanFormReturn {
     }
 
     // ボーナス額
-    const bonusAmount = parseInt(form.bonusAmount, 10) || 0;
-    if (bonusAmount < 0) {
-      newErrors.bonusAmount = '0以上で入力してください';
+    const bonusAmountRaw = parseInt(form.bonusAmount, 10);
+    if (isNaN(bonusAmountRaw) || bonusAmountRaw < 0) {
+      newErrors.bonusAmount = '0以上の整数で入力してください';
     }
+    const bonusAmount = isNaN(bonusAmountRaw) ? 0 : bonusAmountRaw;
 
     // 臨時返済
     const oneTimeExtras: OneTimeExtra[] = [];
     for (let i = 0; i < form.oneTimeExtras.length; i++) {
       const item = form.oneTimeExtras[i];
       const ym = tryCreateYearMonth(item.yearMonth);
-      const amount = parseInt(item.amount, 10) || 0;
+      const amount = parseInt(item.amount, 10);
 
       if (!ym) {
         newErrors[`oneTimeExtras.${i}.yearMonth`] = 'YYYY-MM形式で入力してください';
       }
-      if (amount < 0) {
-        newErrors[`oneTimeExtras.${i}.amount`] = '0以上で入力してください';
+      if (isNaN(amount) || amount < 0) {
+        newErrors[`oneTimeExtras.${i}.amount`] = '0以上の整数で入力してください';
       }
 
-      if (ym && amount >= 0) {
+      if (ym && !isNaN(amount) && amount >= 0) {
         oneTimeExtras.push({ yearMonth: ym, amount });
       }
     }
