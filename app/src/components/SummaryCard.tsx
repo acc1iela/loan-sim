@@ -81,20 +81,20 @@ interface SummaryItemProps {
 
 function SummaryItem({ label, value, subtext, highlight }: SummaryItemProps) {
   return (
-    <div
+    <dl
       className={`p-4 rounded-lg ${
         highlight ? 'bg-green-50 border border-green-200' : 'bg-gray-50'
       }`}
     >
-      <p className="text-sm text-gray-600 mb-1">{label}</p>
-      <p
+      <dt className="text-sm text-gray-600 mb-1">{label}</dt>
+      <dd
         className={`text-xl font-bold ${
           highlight ? 'text-green-700' : 'text-gray-900'
         }`}
       >
         {value}
-      </p>
-      {subtext && <p className="text-xs text-gray-500 mt-1">{subtext}</p>}
-    </div>
+      </dd>
+      {subtext && <dd className="text-xs text-gray-500 mt-1">{subtext}</dd>}
+    </dl>
   );
 }
