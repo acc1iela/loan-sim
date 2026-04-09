@@ -41,6 +41,7 @@ export function PrepaymentSection({
           <input
             id="monthlyExtra"
             type="number"
+            min="0"
             value={monthlyExtra}
             onChange={(e) => onFieldChange('monthlyExtra', e.target.value)}
             className={inputClass}
@@ -83,6 +84,7 @@ export function PrepaymentSection({
             <input
               id="bonusAmount"
               type="number"
+              min="0"
               value={bonusAmount}
               onChange={(e) => onFieldChange('bonusAmount', e.target.value)}
               className={inputClass}

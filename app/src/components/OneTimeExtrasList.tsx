@@ -77,6 +77,7 @@ export function OneTimeExtrasList({
               <input
                 id={`oneTimeExtra-${index}-amount`}
                 type="number"
+                min="0"
                 value={item.amount}
                 onChange={(e) => onUpdate(index, 'amount', e.target.value)}
                 className={inputClass}
