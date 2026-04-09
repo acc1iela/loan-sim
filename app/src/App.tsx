@@ -16,24 +16,32 @@ interface SimulationState {
 
 function App() {
   const [result, setResult] = useState<SimulationState | null>(null);
+  const [simulationError, setSimulationError] = useState<string | null>(null);
 
   const handleSubmit = (input: LoanInput) => {
-    const schedule = generateSchedule(input);
-    const hasPrepayment =
-      input.prepayment.monthlyExtra > 0 ||
-      !!input.prepayment.bonusExtra ||
-      input.prepayment.oneTimeExtras.length > 0;
-    const scheduleWithoutPrepayment = hasPrepayment
-      ? generateScheduleWithoutPrepayment(input)
-      : schedule;
-    const summary = calcSummaryFromSchedule(input, schedule, scheduleWithoutPrepayment);
+    try {
+      const schedule = generateSchedule(input);
+      const hasPrepayment =
+        input.prepayment.monthlyExtra > 0 ||
+        !!input.prepayment.bonusExtra ||
+        input.prepayment.oneTimeExtras.length > 0;
+      const scheduleWithoutPrepayment = hasPrepayment
+        ? generateScheduleWithoutPrepayment(input)
+        : schedule;
+      const summary = calcSummaryFromSchedule(input, schedule, scheduleWithoutPrepayment);
 
-    setResult({
-      input,
-      summary,
-      schedule,
-      scheduleWithoutPrepayment,
-    });
+      setSimulationError(null);
+      setResult({
+        input,
+        summary,
+        schedule,
+        scheduleWithoutPrepayment,
+      });
+    } catch (err) {
+      setSimulationError(
+        err instanceof Error ? err.message : 'シミュレーション中に予期しないエラーが発生しました'
+      );
+    }
   };
 
   return (
@@ -51,6 +59,15 @@ function App() {
           </div>
 
           <div className="lg:col-span-2 space-y-6">
+            {simulationError && (
+              <div
+                role="alert"
+                className="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-lg"
+              >
+                <p className="font-medium">エラーが発生しました</p>
+                <p className="text-sm mt-1">{simulationError}</p>
+              </div>
+            )}
             {result ? (
               <>
                 <SummaryCard summary={result.summary} principal={result.input.principal} />
