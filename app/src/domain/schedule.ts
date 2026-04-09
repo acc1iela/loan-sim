@@ -70,14 +70,15 @@ export function generateSchedule(input: LoanInput): ScheduleRow[] {
     const totalPrincipalNeeded = balance;
     const totalPrincipalAvailable = principalPayment + extraPayment;
 
+    let newBalance: number;
     if (totalPrincipalAvailable >= totalPrincipalNeeded) {
-      // 完済月
+      // 完済月: 浮動小数点誤差を残さず 0 に確定する
       principalPayment = Math.min(principalPayment, totalPrincipalNeeded);
       extraPayment = totalPrincipalNeeded - principalPayment;
+      newBalance = 0;
+    } else {
+      newBalance = balance - principalPayment - extraPayment;
     }
-
-    // 新残高
-    const newBalance = balance - principalPayment - extraPayment;
 
     // payment = interest + principalPayment + extraPayment（不変条件）
     const payment = interest + principalPayment + extraPayment;
