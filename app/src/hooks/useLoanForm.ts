@@ -85,9 +85,9 @@ export function useLoanForm(): UseLoanFormReturn {
     // 借入額
     const principal = parseInt(form.principal, 10);
     if (isNaN(principal) || principal <= 0) {
-      newErrors.principal = '借入額は正の整数で入力してください';
+      newErrors.principal = '借入額は1円以上5億円以下の整数で入力してください';
     } else if (principal > 500_000_000) {
-      newErrors.principal = '借入額は5億円以下で入力してください';
+      newErrors.principal = '借入額は1円以上5億円以下の整数で入力してください';
     }
 
     // 年利
@@ -101,9 +101,9 @@ export function useLoanForm(): UseLoanFormReturn {
     // 返済年数
     const termYears = parseInt(form.termYears, 10);
     if (isNaN(termYears) || termYears <= 0) {
-      newErrors.termYears = '返済年数は正の整数で入力してください';
+      newErrors.termYears = '返済年数は1年以上50年以下の整数で入力してください';
     } else if (termYears > 50) {
-      newErrors.termYears = '返済年数は50年以下で入力してください';
+      newErrors.termYears = '返済年数は1年以上50年以下の整数で入力してください';
     }
 
     // 開始年月
