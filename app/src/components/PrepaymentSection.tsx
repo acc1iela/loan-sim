@@ -2,6 +2,7 @@ import { OneTimeExtrasList } from './OneTimeExtrasList';
 import { INPUT_CLASS as inputClass, LABEL_CLASS as labelClass, ERROR_CLASS as errorClass } from '../utils/styles';
 
 interface OneTimeExtraItem {
+  id: string;
   yearMonth: string;
   amount: string;
 }

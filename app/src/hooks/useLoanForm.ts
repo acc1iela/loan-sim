@@ -10,7 +10,7 @@ export interface FormState {
   monthlyExtra: string;
   bonusMonths: string;
   bonusAmount: string;
-  oneTimeExtras: { yearMonth: string; amount: string }[];
+  oneTimeExtras: { id: string; yearMonth: string; amount: string }[];
 }
 
 const initialFormState: FormState = {
@@ -59,7 +59,10 @@ export function useLoanForm(): UseLoanFormReturn {
   const addOneTimeExtra = () => {
     setForm((prev) => ({
       ...prev,
-      oneTimeExtras: [...prev.oneTimeExtras, { yearMonth: '', amount: '0' }],
+      oneTimeExtras: [
+        ...prev.oneTimeExtras,
+        { id: crypto.randomUUID(), yearMonth: '', amount: '0' },
+      ],
     }));
   };
 

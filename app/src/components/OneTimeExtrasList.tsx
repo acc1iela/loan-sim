@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { INPUT_CLASS as inputClass, LABEL_CLASS as labelClass, ERROR_CLASS as errorClass } from '../utils/styles';
 
 interface OneTimeExtraItem {
+  id: string;
   yearMonth: string;
   amount: string;
 }
@@ -54,7 +55,7 @@ export function OneTimeExtrasList({
         const amtErrorKey = `oneTimeExtras.${index}.amount`;
         const isConfirming = confirmIndex === index;
         return (
-          <div key={index} className="flex gap-2 mb-2 items-start">
+          <div key={item.id} className="flex gap-2 mb-2 items-start">
             <div className="flex-1">
               <input
                 id={`oneTimeExtra-${index}-yearMonth`}
