@@ -1,6 +1,21 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import type { LoanInput, OneTimeExtra, YearMonth } from '../domain';
 import { getCurrentYearMonth, tryCreateYearMonth } from '../domain';
+
+const STORAGE_KEY = 'loan-sim-form-v2';
+
+function loadFromStorage(): FormState | null {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw) as FormState;
+    // 最低限の構造チェック
+    if (typeof parsed.principal !== 'string') return null;
+    return parsed;
+  } catch {
+    return null;
+  }
+}
 
 export interface FormState {
   principal: string;
@@ -45,11 +60,19 @@ export interface UseLoanFormReturn {
  * LoanForm の状態管理とバリデーションを担当するフック
  */
 export function useLoanForm(): UseLoanFormReturn {
-  const [form, setForm] = useState<FormState>(() => ({
-    ...initialFormState,
-    startYearMonth: getCurrentYearMonth(),
-  }));
+  const [form, setForm] = useState<FormState>(() => {
+    const saved = loadFromStorage();
+    return saved ?? { ...initialFormState, startYearMonth: getCurrentYearMonth() };
+  });
   const [errors, setErrors] = useState<ValidationErrors>({});
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(form));
+    } catch {
+      // localStorage が使えない環境（プライベートブラウジング制限等）では無視
+    }
+  }, [form]);
 
   const updateField = (field: keyof FormState, value: string) => {
     setForm((prev) => ({ ...prev, [field]: value }));
