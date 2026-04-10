@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import type { LoanInput, ScheduleRow, Summary } from './domain';
 import {
   generateSchedule,
@@ -17,8 +17,15 @@ interface SimulationState {
 function App() {
   const [result, setResult] = useState<SimulationState | null>(null);
   const [simulationError, setSimulationError] = useState<string | null>(null);
+  const resultRef = useRef<HTMLDivElement>(null);
 
-  const handleSubmit = (input: LoanInput) => {
+  useEffect(() => {
+    if (result) {
+      resultRef.current?.focus();
+    }
+  }, [result]);
+
+  const handleSubmit = useCallback((input: LoanInput) => {
     try {
       const schedule = generateSchedule(input);
       const hasPrepayment =
@@ -42,7 +49,7 @@ function App() {
         err instanceof Error ? err.message : 'シミュレーション中に予期しないエラーが発生しました'
       );
     }
-  };
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -58,7 +65,7 @@ function App() {
             <LoanForm onSubmit={handleSubmit} />
           </div>
 
-          <div className="lg:col-span-2 space-y-6">
+          <div ref={resultRef} tabIndex={-1} className="lg:col-span-2 space-y-6 outline-none">
             {simulationError && (
               <div
                 role="alert"
