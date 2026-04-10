@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import type { ScheduleRow } from '../domain';
 import { formatCurrency } from '../utils/format';
 
@@ -17,11 +17,12 @@ export function ScheduleTable({ schedule }: ScheduleTableProps) {
     setPrevSchedule(schedule);
     setCurrentPage(0);
   }
-  const totalPages = Math.ceil(schedule.length / PAGE_SIZE);
-
-  const startIndex = currentPage * PAGE_SIZE;
-  const endIndex = Math.min(startIndex + PAGE_SIZE, schedule.length);
-  const currentRows = schedule.slice(startIndex, endIndex);
+  const { totalPages, startIndex, endIndex, currentRows } = useMemo(() => {
+    const total = Math.ceil(schedule.length / PAGE_SIZE);
+    const start = currentPage * PAGE_SIZE;
+    const end = Math.min(start + PAGE_SIZE, schedule.length);
+    return { totalPages: total, startIndex: start, endIndex: end, currentRows: schedule.slice(start, end) };
+  }, [schedule, currentPage]);
 
   const goToPage = (page: number) => {
     setCurrentPage(Math.max(0, Math.min(page, totalPages - 1)));
