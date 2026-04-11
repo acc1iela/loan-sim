@@ -44,7 +44,7 @@ export function OneTimeExtrasList({
         <button
           type="button"
           onClick={onAdd}
-          className="text-sm text-blue-600 hover:text-blue-800"
+          className="text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
         >
           + 追加
         </button>
@@ -106,7 +106,7 @@ export function OneTimeExtrasList({
                 <button
                   type="button"
                   onClick={handleCancelRemove}
-                  className="px-2 py-1 text-xs text-gray-600 hover:text-gray-800 border rounded"
+                  className="px-2 py-1 text-xs text-gray-600 hover:text-gray-800 border rounded dark:text-gray-300 dark:border-gray-600 dark:hover:text-gray-100"
                   aria-label="削除をキャンセル"
                 >
                   戻す
@@ -116,7 +116,7 @@ export function OneTimeExtrasList({
               <button
                 type="button"
                 onClick={() => handleRemoveClick(index)}
-                className="px-3 py-2 text-red-600 hover:text-red-800"
+                className="px-3 py-2 text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300"
                 aria-label={`臨時返済${index + 1}を削除`}
               >
                 ×
