@@ -14,6 +14,7 @@ import type { ScheduleRow } from '../domain';
 interface BalanceChartProps {
   schedule: ScheduleRow[];
   scheduleWithoutPrepayment?: ScheduleRow[];
+  isDark?: boolean;
 }
 
 /** 数値を万円単位でフォーマット */
@@ -29,30 +30,36 @@ function formatTooltip(value: number): string {
   return `${value.toLocaleString('ja-JP')}円`;
 }
 
-export function BalanceChart({ schedule, scheduleWithoutPrepayment }: BalanceChartProps) {
+export function BalanceChart({ schedule, scheduleWithoutPrepayment, isDark = false }: BalanceChartProps) {
   // チャート用データの準備（年単位でサンプリング）
   const chartData = useMemo(
     () => prepareChartData(schedule, scheduleWithoutPrepayment),
     [schedule, scheduleWithoutPrepayment]
   );
 
+  const gridColor = isDark ? '#374151' : '#e5e7eb';
+  const axisColor = isDark ? '#9ca3af' : '#6b7280';
+  const tooltipBg = isDark ? '#1f2937' : 'white';
+  const tooltipBorder = isDark ? '#374151' : '#e5e7eb';
+  const tooltipText = isDark ? '#f3f4f6' : undefined;
+
   return (
-    <div className="bg-white p-6 rounded-lg shadow">
-      <h2 className="text-lg font-semibold mb-4">残高推移</h2>
+    <div className="bg-white p-6 rounded-lg shadow dark:bg-gray-800">
+      <h2 className="text-lg font-semibold mb-4 dark:text-white">残高推移</h2>
 
       <div className="h-80" role="img" aria-label="元本残高の推移グラフ">
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={chartData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+            <CartesianGrid strokeDasharray="3 3" stroke={gridColor} />
             <XAxis
               dataKey="label"
-              tick={{ fontSize: 12 }}
-              stroke="#6b7280"
+              tick={{ fontSize: 12, fill: axisColor }}
+              stroke={axisColor}
             />
             <YAxis
               tickFormatter={formatYAxis}
-              tick={{ fontSize: 12 }}
-              stroke="#6b7280"
+              tick={{ fontSize: 12, fill: axisColor }}
+              stroke={axisColor}
             />
             <Tooltip
               formatter={(value, name) => {
@@ -61,9 +68,10 @@ export function BalanceChart({ schedule, scheduleWithoutPrepayment }: BalanceCha
               }}
               labelFormatter={(label) => `${label}`}
               contentStyle={{
-                backgroundColor: 'white',
-                border: '1px solid #e5e7eb',
+                backgroundColor: tooltipBg,
+                border: `1px solid ${tooltipBorder}`,
                 borderRadius: '8px',
+                color: tooltipText,
               }}
             />
             <ReferenceLine y={0} stroke="#9ca3af" />
@@ -97,11 +105,11 @@ export function BalanceChart({ schedule, scheduleWithoutPrepayment }: BalanceCha
         <div className="flex gap-6 mt-4 text-sm justify-center">
           <div className="flex items-center gap-2">
             <div className="w-4 h-0.5 bg-blue-600" />
-            <span className="text-gray-600">繰上げあり</span>
+            <span className="text-gray-600 dark:text-gray-400">繰上げあり</span>
           </div>
           <div className="flex items-center gap-2">
             <div className="w-4 h-0.5 bg-gray-400 border-dashed" style={{ borderTopWidth: 2, borderTopStyle: 'dashed' }} />
-            <span className="text-gray-600">繰上げなし</span>
+            <span className="text-gray-600 dark:text-gray-400">繰上げなし</span>
           </div>
         </div>
       )}
