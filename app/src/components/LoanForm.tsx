@@ -31,8 +31,8 @@ export function LoanForm({ onSubmit }: LoanFormProps) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      <div className="bg-white p-6 rounded-lg shadow">
-        <h2 className="text-lg font-semibold mb-4">ローン条件</h2>
+      <div className="bg-white p-6 rounded-lg shadow dark:bg-gray-800">
+        <h2 className="text-lg font-semibold mb-4 dark:text-white">ローン条件</h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>

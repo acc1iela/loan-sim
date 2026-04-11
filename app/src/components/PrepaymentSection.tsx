@@ -31,8 +31,8 @@ export function PrepaymentSection({
   onRemoveOneTimeExtra,
 }: PrepaymentSectionProps) {
   return (
-    <div className="bg-white p-6 rounded-lg shadow">
-      <h2 className="text-lg font-semibold mb-4">繰上げ返済</h2>
+    <div className="bg-white p-6 rounded-lg shadow dark:bg-gray-800">
+      <h2 className="text-lg font-semibold mb-4 dark:text-white">繰上げ返済</h2>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
