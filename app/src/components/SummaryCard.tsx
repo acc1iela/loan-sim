@@ -24,8 +24,8 @@ export function SummaryCard({ summary, principal }: SummaryCardProps) {
   const hasPrepayment = summary.reductionMonthCount > 0 || summary.interestSaved > 0;
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow">
-      <h2 className="text-lg font-semibold mb-4">シミュレーション結果</h2>
+    <div className="bg-white p-6 rounded-lg shadow dark:bg-gray-800">
+      <h2 className="text-lg font-semibold mb-4 dark:text-white">シミュレーション結果</h2>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         <SummaryItem
@@ -83,18 +83,20 @@ function SummaryItem({ label, value, subtext, highlight }: SummaryItemProps) {
   return (
     <dl
       className={`p-4 rounded-lg ${
-        highlight ? 'bg-green-50 border border-green-200' : 'bg-gray-50'
+        highlight
+          ? 'bg-green-50 border border-green-200 dark:bg-green-900/20 dark:border-green-800'
+          : 'bg-gray-50 dark:bg-gray-700'
       }`}
     >
-      <dt className="text-sm text-gray-600 mb-1">{label}</dt>
+      <dt className="text-sm text-gray-600 mb-1 dark:text-gray-400">{label}</dt>
       <dd
         className={`text-xl font-bold ${
-          highlight ? 'text-green-700' : 'text-gray-900'
+          highlight ? 'text-green-700 dark:text-green-400' : 'text-gray-900 dark:text-white'
         }`}
       >
         {value}
       </dd>
-      {subtext && <dd className="text-xs text-gray-500 mt-1">{subtext}</dd>}
+      {subtext && <dd className="text-xs text-gray-500 mt-1 dark:text-gray-400">{subtext}</dd>}
     </dl>
   );
 }
