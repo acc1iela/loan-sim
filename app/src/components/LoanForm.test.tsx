@@ -121,7 +121,7 @@ describe('LoanForm', () => {
 
       await user.click(screen.getByRole('button', { name: 'シミュレーション実行' }));
 
-      expect(screen.getByText('借入額は正の整数で入力してください')).toBeInTheDocument();
+      expect(screen.getByText('借入額は1円以上5億円以下の整数で入力してください')).toBeInTheDocument();
       expect(onSubmit).not.toHaveBeenCalled();
     });
 
@@ -151,7 +151,7 @@ describe('LoanForm', () => {
 
       await user.click(screen.getByRole('button', { name: 'シミュレーション実行' }));
 
-      expect(screen.getByText('返済年数は正の整数で入力してください')).toBeInTheDocument();
+      expect(screen.getByText('返済年数は1年以上50年以下の整数で入力してください')).toBeInTheDocument();
       expect(onSubmit).not.toHaveBeenCalled();
     });
 
@@ -179,14 +179,14 @@ describe('LoanForm', () => {
 
       await user.click(screen.getByRole('button', { name: 'シミュレーション実行' }));
 
-      expect(screen.getByText('借入額は正の整数で入力してください')).toBeInTheDocument();
+      expect(screen.getByText('借入額は1円以上5億円以下の整数で入力してください')).toBeInTheDocument();
 
       // 値を修正
       await user.clear(principalInput);
       await user.type(principalInput, '1000000');
 
       // エラーがクリアされている
-      expect(screen.queryByText('借入額は正の整数で入力してください')).not.toBeInTheDocument();
+      expect(screen.queryByText('借入額は1円以上5億円以下の整数で入力してください')).not.toBeInTheDocument();
     });
   });
 
