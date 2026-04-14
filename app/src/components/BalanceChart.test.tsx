@@ -1,9 +1,9 @@
 import { render, screen } from '@testing-library/react';
-import { describe, it, expect, beforeAll } from 'vitest';
+import { describe, it, expect, beforeAll, vi } from 'vitest';
 import { BalanceChart } from './BalanceChart';
 import type { ScheduleRow, YearMonth } from '../domain';
 
-// RechartsはResizeObserverを使うので、テスト環境用にモッククラスを定義
+// RechartsはResizeObserverを使うので、テスト環境用にスタブする
 class MockResizeObserver {
   observe() {}
   unobserve() {}
@@ -11,7 +11,7 @@ class MockResizeObserver {
 }
 
 beforeAll(() => {
-  global.ResizeObserver = MockResizeObserver;
+  vi.stubGlobal('ResizeObserver', MockResizeObserver);
 });
 
 const mockSchedule: ScheduleRow[] = [
