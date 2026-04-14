@@ -2,6 +2,14 @@ import { render, screen } from '@testing-library/react';
 import { describe, it, expect, beforeAll, vi } from 'vitest';
 import { BalanceChart } from './BalanceChart';
 import type { ScheduleRow, YearMonth } from '../domain';
+import { DarkModeContext } from '../context/DarkModeContext';
+
+const renderWithDarkMode = (ui: React.ReactElement) =>
+  render(
+    <DarkModeContext.Provider value={{ isDark: false, toggle: vi.fn() }}>
+      {ui}
+    </DarkModeContext.Provider>
+  );
 
 // RechartsはResizeObserverを使うので、テスト環境用にスタブする
 class MockResizeObserver {
@@ -37,13 +45,13 @@ const mockSchedule: ScheduleRow[] = [
 
 describe('BalanceChart', () => {
   it('残高推移のタイトルが表示される', () => {
-    render(<BalanceChart schedule={mockSchedule} />);
+    renderWithDarkMode(<BalanceChart schedule={mockSchedule} />);
 
     expect(screen.getByText('残高推移')).toBeInTheDocument();
   });
 
   it('繰上げ比較データがある場合、凡例が表示される', () => {
-    render(
+    renderWithDarkMode(
       <BalanceChart
         schedule={mockSchedule}
         scheduleWithoutPrepayment={mockSchedule}
@@ -55,7 +63,7 @@ describe('BalanceChart', () => {
   });
 
   it('空のスケジュールでもクラッシュしない', () => {
-    render(<BalanceChart schedule={[]} />);
+    renderWithDarkMode(<BalanceChart schedule={[]} />);
 
     expect(screen.getByText('残高推移')).toBeInTheDocument();
   });

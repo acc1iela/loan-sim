@@ -7,6 +7,7 @@ import {
 } from './domain';
 import { LoanForm, SummaryCard, ScheduleTable, BalanceChart } from './components';
 import { useDarkMode } from './hooks/useDarkMode';
+import { DarkModeContext } from './context/DarkModeContext';
 
 interface SimulationState {
   input: LoanInput;
@@ -54,6 +55,7 @@ function App() {
   }, []);
 
   return (
+    <DarkModeContext.Provider value={{ isDark, toggle: toggleDark }}>
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
       <header className="bg-white dark:bg-gray-800 shadow-sm">
         <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
@@ -95,7 +97,6 @@ function App() {
                       ? result.scheduleWithoutPrepayment
                       : undefined
                   }
-                  isDark={isDark}
                 />
                 <ScheduleTable schedule={result.schedule} />
               </>
@@ -109,6 +110,7 @@ function App() {
         </div>
       </main>
     </div>
+    </DarkModeContext.Provider>
   );
 }
 

@@ -10,11 +10,11 @@ import {
   ReferenceLine,
 } from 'recharts';
 import type { ScheduleRow } from '../domain';
+import { useDarkModeContext } from '../context/DarkModeContext';
 
 interface BalanceChartProps {
   schedule: ScheduleRow[];
   scheduleWithoutPrepayment?: ScheduleRow[];
-  isDark?: boolean;
 }
 
 /** 数値を万円単位でフォーマット */
@@ -30,7 +30,8 @@ function formatTooltip(value: number): string {
   return `${value.toLocaleString('ja-JP')}円`;
 }
 
-export function BalanceChart({ schedule, scheduleWithoutPrepayment, isDark = false }: BalanceChartProps) {
+export function BalanceChart({ schedule, scheduleWithoutPrepayment }: BalanceChartProps) {
+  const { isDark } = useDarkModeContext();
   // チャート用データの準備（年単位でサンプリング）
   const chartData = useMemo(
     () => prepareChartData(schedule, scheduleWithoutPrepayment),
