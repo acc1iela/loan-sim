@@ -62,7 +62,9 @@ export interface UseLoanFormReturn {
 export function useLoanForm(): UseLoanFormReturn {
   const [form, setForm] = useState<FormState>(() => {
     const saved = loadFromStorage();
-    return saved ?? { ...initialFormState, startYearMonth: getCurrentYearMonth() };
+    if (!saved) return { ...initialFormState, startYearMonth: getCurrentYearMonth() };
+    // 過去の開始年月が残っていると意図せず古いシミュレーションになるため現在の年月で上書き
+    return { ...saved, startYearMonth: getCurrentYearMonth() };
   });
   const [errors, setErrors] = useState<ValidationErrors>({});
 
